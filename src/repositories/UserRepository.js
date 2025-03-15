@@ -1,10 +1,10 @@
 // src/repositories/UserRepository.js
 const UserModel = require("../infrastructure/models/UserModel");
+const AddressModel = require("../infrastructure/models/AddressModel");
 
 class UserRepository {
   async create(user) {
-    const createdUser = await UserModel.create(user);
-    return createdUser;
+    return await UserModel.create(user);
   }
 
   async findByEmail(email) {
@@ -12,11 +12,20 @@ class UserRepository {
   }
 
   async findById(id) {
-    return await UserModel.findByPk(id);
+    return await UserModel.findByPk(id, {
+      include: [{ model: AddressModel, as: "endereco" }],
+    });
   }
 
   async getAll() {
-    return await UserModel.findAll();
+    return await UserModel.findAll({
+      include: [
+        {
+          model: AddressModel,
+          as: "endereco",
+        },
+      ],
+    });
   }
 }
 

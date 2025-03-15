@@ -1,5 +1,6 @@
 class Address {
   constructor({
+    id,
     logradouro,
     numero,
     complemento,
@@ -9,6 +10,7 @@ class Address {
     cep,
     userId,
   }) {
+    this.id = id;
     this.logradouro = logradouro;
     this.numero = numero;
     this.complemento = complemento;

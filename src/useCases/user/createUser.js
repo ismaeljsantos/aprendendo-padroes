@@ -8,7 +8,7 @@ class CreateUserUseCase {
     this.usersRepository = usersRepository;
   }
   async execute({ nome, email, dataNascimento, cpf, senha, endereco }) {
-    console.log(this.usersRepository);
+    //console.log(this.usersRepository);
     const existingUser = await this.usersRepository.findByEmail(email);
     if (existingUser) {
       throw new Error("Este email não pode ser utilizado");
@@ -34,12 +34,12 @@ class CreateUserUseCase {
     };
 
     const createdUser = await this.usersRepository.create(userToPersist);
-
+    console.log("endereco recebido:", endereco);
     const AddressEntity = new Address({
       id: uuidv4(),
-      user_id: createdUser.id,
+      userId: createdUser.id,
       cep: endereco.cep,
-      rua: endereco.rua,
+      logradouro: endereco.logradouro,
       numero: endereco.numero,
       bairro: endereco.bairro,
       cidade: endereco.cidade,
@@ -48,9 +48,9 @@ class CreateUserUseCase {
 
     const addressToPersist = {
       id: AddressEntity.id,
-      user_id: AddressEntity.user_id,
+      userId: AddressEntity.userId,
       cep: AddressEntity.cep,
-      rua: AddressEntity.rua,
+      logradouro: AddressEntity.logradouro,
       numero: AddressEntity.numero,
       bairro: AddressEntity.bairro,
       cidade: AddressEntity.cidade,

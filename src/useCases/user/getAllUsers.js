@@ -1,10 +1,11 @@
 class GetAllUsersUseCase {
-  constructor(userRepository) {
-    this.userRepository = userRepository;
+  constructor({ usersRepository }) {
+    //console.log("Injected UserRepository:", usersRepository);
+    this.usersRepository = usersRepository;
   }
 
   async execute() {
-    return await this.userRepository.getAll();
+    return await this.usersRepository.getAll();
   }
 }
 
