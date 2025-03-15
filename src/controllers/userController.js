@@ -12,13 +12,14 @@ const getAllUsersUseCase = new GetAllUsersUseCase({
 class UserController {
   async createUser(req, res) {
     try {
-      const { nome, email, dataNascimento, cpf, senha } = req.body;
+      const { nome, email, dataNascimento, cpf, senha, endereco } = req.body;
       const user = await createUserUseCase.execute({
         nome,
         email,
         dataNascimento,
         cpf,
         senha,
+        endereco,
       });
       return res.status(201).json(user);
     } catch (error) {

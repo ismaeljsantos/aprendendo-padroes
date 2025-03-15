@@ -1,45 +1,51 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
 
-const UserMoldel = sequelize.define(
-  "User",
+const Address = sequelize.define(
+  "Address",
   {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    nome: {
+    logradouro: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    numero: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
-    dataNascimento: {
-      type: DataTypes.DATE,
-      allowNull: false,
+    complemento: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
-    cpf: {
+    bairro: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
-    senha: {
+    cidade: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    estado: {
+      type: DataTypes.STRING(2), // UF
+      allowNull: false,
+    },
+    cep: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    userId: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
   },
   {
-    tableName: "users",
+    tableName: "addresses",
     timestamps: true,
   }
 );
 
-const AddressModel = require("./AddressModel");
-UserMoldel.hasOne(AddressModel, { foreignKey: "userId", as: "endereco" });
-AddressModel.belongsTo(UserMoldel, { foreignKey: "userId", as: "usuario" });
-
-module.exports = UserMoldel;
+module.exports = Address;
