@@ -1,0 +1,8 @@
+# Diretórios e arquivos para ignorar
+node_modules/
+.env
+dist/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
