@@ -54,11 +54,15 @@ class UserController {
     try {
       const userId = req.params.id;
       const { userData, addressData } = req.body;
+
       const updatedUser = await updateUserUseCase.execute(userId, {
         userData,
         addressData,
       });
-      return res.json(updatedUser);
+      return res.json({
+        message: "Usuário atualizado com sucesso",
+        data: updatedUser,
+      });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

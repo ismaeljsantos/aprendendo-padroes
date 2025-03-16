@@ -11,7 +11,9 @@ class UpdateUserUseCase {
     if (userData) {
       await this.usersRepository.update(userId, userData);
     }
-
+    if (userData && addressData) {
+      throw new Error("Alterar o CPF não é permitido");
+    }
     if (addressData) {
       const address = await this.addressRepository.findByUserId(userId);
       if (address) {

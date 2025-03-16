@@ -13,7 +13,7 @@ function authMiddleware(req, res, next) {
     req.userId = decoded.userId;
     next();
   } catch (error) {
-    return res.status(401).send({ error: "Token inválido" });
+    return res.status(401).send({ error: "Token inválido ou expirado" });
   }
 }
 

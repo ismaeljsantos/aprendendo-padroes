@@ -32,6 +32,9 @@ class UserRepository {
   }
 
   async update(userId, updatedData) {
+    if (updatedData && updatedData.cpf) {
+      throw new Error("Não é possível alterar o CPF");
+    }
     const [rowsUpdated] = await UserModel.update(updatedData, {
       where: { id: userId },
     });

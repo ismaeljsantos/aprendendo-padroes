@@ -1,3 +1,4 @@
+// src/repositories/AddressRepository.js
 const AddressModel = require("../infrastructure/models/AddressModel");
 
 class AddressRepository {
@@ -12,6 +13,9 @@ class AddressRepository {
       where: { id: addressId },
     });
     return rowsUpdated;
+  }
+  async getAll() {
+    return await AddressModel.findAll();
   }
 }
 
