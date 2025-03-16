@@ -14,11 +14,14 @@ class UserRepository {
   async findById(id) {
     return await UserModel.findByPk(id, {
       include: [{ model: AddressModel, as: "endereco" }],
+      raw: true,
+      nest: true,
     });
   }
 
   async getAll() {
     return await UserModel.findAll({
+      attributes: { exclude: ["senha"] },
       include: [
         {
           model: AddressModel,

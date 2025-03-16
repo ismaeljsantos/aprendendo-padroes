@@ -2,6 +2,19 @@ const { v4: uuidv4 } = require("uuid");
 const User = require("../../domain/entities/User");
 const Address = require("../../domain/entities/Address");
 const AddressRepository = require("../../repositories/AddressRepository");
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+
+function encryptCpf(cpf) {
+  const key = crypto.scryptSync("so-jesus-salva", "salt", 32);
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+
+  let encrypted = cipher.update(cpf, "utf8", "hex");
+  encrypted += cipher.final("hex");
+
+  return { encryptedCpf: encrypted, iv: iv.toString("hex") };
+}
 
 class CreateUserUseCase {
   constructor({ usersRepository }) {
@@ -14,14 +27,17 @@ class CreateUserUseCase {
       throw new Error("Este email não pode ser utilizado");
     }
     const id = uuidv4();
+    const hashedPassword = await bcrypt.hash(senha, 10);
+    const { encryptedCpf, iv } = encryptCpf(cpf);
 
     const userEntity = new User({
       id,
       nome,
       email,
       dataNascimento,
-      cpf,
-      senha,
+      cpf: encryptedCpf,
+      cpfIv: iv,
+      senha: hashedPassword,
     });
 
     const userToPersist = {
@@ -30,11 +46,14 @@ class CreateUserUseCase {
       email: userEntity.email,
       dataNascimento: userEntity.dataNascimento,
       cpf: userEntity.cpf,
+      cpfIv: userEntity.cpfIv,
       senha: userEntity.senha,
     };
 
     const createdUser = await this.usersRepository.create(userToPersist);
-    console.log("endereco recebido:", endereco);
+
+    //console.log("endereco recebido:", endereco);
+
     const AddressEntity = new Address({
       id: uuidv4(),
       userId: createdUser.id,

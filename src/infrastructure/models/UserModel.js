@@ -27,6 +27,13 @@ const UserMoldel = sequelize.define(
       allowNull: false,
       unique: true,
     },
+    cpfIv: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: { msg: "O campo cpfIv não pode ser nulo" },
+      },
+    },
     senha: {
       type: DataTypes.STRING,
       allowNull: false,
