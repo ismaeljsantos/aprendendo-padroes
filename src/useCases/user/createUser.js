@@ -4,6 +4,7 @@ const Address = require("../../domain/entities/Address");
 const AddressRepository = require("../../repositories/AddressRepository");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const validarCpf = require("../../utils/cpfValidator");
 
 function encryptCpf(cpf) {
   const key = crypto.scryptSync("so-jesus-salva", "salt", 32);
@@ -21,11 +22,15 @@ class CreateUserUseCase {
     this.usersRepository = usersRepository;
   }
   async execute({ nome, email, dataNascimento, cpf, senha, endereco }) {
+    if (!validarCpf(cpf))
+      throw new Error("CPF inválido. verifique o formato e tente novamente");
+
     //console.log(this.usersRepository);
     const existingUser = await this.usersRepository.findByEmail(email);
     if (existingUser) {
       throw new Error("Este email não pode ser utilizado");
     }
+
     const id = uuidv4();
     const hashedPassword = await bcrypt.hash(senha, 10);
     const { encryptedCpf, iv } = encryptCpf(cpf);
