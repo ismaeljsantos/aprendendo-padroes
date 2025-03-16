@@ -27,6 +27,13 @@ class UserRepository {
       ],
     });
   }
+
+  async update(userId, updatedData) {
+    const [rowsUpdated] = await UserModel.update(updatedData, {
+      where: { id: userId },
+    });
+    return rowsUpdated;
+  }
 }
 
 module.exports = new UserRepository();

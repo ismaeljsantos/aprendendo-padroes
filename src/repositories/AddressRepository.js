@@ -2,11 +2,16 @@ const AddressModel = require("../infrastructure/models/AddressModel");
 
 class AddressRepository {
   async create(address) {
-    const createdAddress = await AddressModel.create(address);
-    return createdAddress;
+    return await AddressModel.create(address);
   }
   async findByUserId(userId) {
     return await AddressModel.findOne({ where: { userId } });
+  }
+  async update(addressId, updatedData) {
+    const [rowsUpdated] = await AddressModel.update(updatedData, {
+      where: { id: addressId },
+    });
+    return rowsUpdated;
   }
 }
 
