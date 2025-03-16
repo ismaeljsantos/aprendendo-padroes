@@ -24,7 +24,7 @@ Este projeto foi criado com o objetivo de aprender e implementar padrões de des
 ### 1. Clone o repositório:
 
 ```bash
-    git clone <url-do-repositorio>
+    git clone https://github.com/ismaeljsantos/aprendendo-padroes.git
 ```
 
 ### 2. Instale as dependências:
