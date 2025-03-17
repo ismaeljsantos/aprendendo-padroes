@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/database");
 
-const UserMoldel = sequelize.define(
+const UserModel = sequelize.define(
   "User",
   {
     id: {
@@ -45,8 +45,16 @@ const UserMoldel = sequelize.define(
   }
 );
 
-const AddressModel = require("./AddressModel");
-UserMoldel.hasOne(AddressModel, { foreignKey: "userId", as: "endereco" });
-AddressModel.belongsTo(UserMoldel, { foreignKey: "userId", as: "usuario" });
+// Relacionamentos
+UserModel.associate = (models) => {
+  UserModel.hasOne(models.AddressModel, {
+    foreignKey: "userId",
+    as: "endereco",
+  });
+  UserModel.belongsToMany(models.CategoryModel, {
+    through: models.UserCategoryModel,
+    as: "categorias",
+  });
+};
 
-module.exports = UserMoldel;
+module.exports = UserModel;
